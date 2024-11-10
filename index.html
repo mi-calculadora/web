@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora del cambio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ff0ad4;
+            padding: 20px;
+        }
+        .calculator {
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            font-size: 30px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #f0a1f0;
+            border: none;
+            border-radius: 5px;
+        }
+        .display {
+            font-size: 40px;
+            margin: 20px;
+            padding: 10px;
+            width: 320px;
+            text-align: right;
+            background-color:#f8e1f4;
+            border-radius: 5px;
+            border: 2px solid #e695e4;
+        }
+        .message {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px;
+            color: #ff5e92;
+        }
+        .reaction-buttons {
+            margin-top: 20px;
+        }
+        .reaction-buttons button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff5e92;
+            color: white;
+            cursor: pointer;
+        }
+        .message-image {
+            margin-top: 20px;
+            max-width: 300px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <h1>Multiplicando Amor</h1>
+        <h1>y 0 bullying</h1>
+        <style>
+    /* Cambiar el color del título */
+    #titulo { un
+        color: #FF1493; /* Este es un color rosa brillante */
+        font-family: 'Arial', sans-serif; /* Cambiar la fuente a Arial */
+    }
+</style>
+        <input id="display" class="display" type="text" disabled>
+
+        <div>
+            <button class="button" onclick="appendNumber(7)">7</button>
+            <button class="button" onclick="appendNumber(8)">8</button>
+            <button class="button" onclick="appendNumber(9)">9</button>
+            <button class="button" onclick="operation('/')">/</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(4)">4</button>
+            <button class="button" onclick="appendNumber(5)">5</button>
+            <button class="button" onclick="appendNumber(6)">6</button>
+            <button class="button" onclick="operation('*')">*</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(1)">1</button>
+            <button class="button" onclick="appendNumber(2)">2</button>
+            <button class="button" onclick="appendNumber(3)">3</button>
+            <button class="button" onclick="operation('-')">-</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber(0)">0</button>
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="calculate()">=</button>
+            <button class="button" onclick="operation('+')">+</button>
+        </div>
+
+        <div id="message" class="message"></div>
+        <img id="message-image" class="message-image" src="" alt="Imagen motivacional">
+
+        <div id="reaction-buttons" class="reaction-buttons">
+            <!-- Botones de reacción -->
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let currentOperation = '';
+        let prevInput = '';
+        
+       const mensajes = {
+    "12x8": {
+        texto: "¡El bullying no tiene cabida aquí! Tu valía es única.",
+        imagen: "https://i.pinimg.com/564x/28/87/60/288760f94731f7de83194991464db317.jpg"
+    },
+    "12x7": {
+        texto: "Recuerda, siempre eres suficiente tal como eres.",
+        imagen: "https://i.pinimg.com/564x/3b/e6/2a/3be62a76790872a1c3df29f84233fb2e.jpg"
+    },
+    "12x6": {
+        texto: "Tu autoestima es poderosa, ¡sé orgullosa de ti misma!",
+        imagen: "https://i.pinimg.com/564x/5d/12/36/5d1236a3e5b55bf721906dccaee1b7f6.jpg"
+    },
+    "8x3": {
+        texto: "¡La paz comienza contigo misma, no dejes que te la quiten!",
+        imagen: "https://i.pinimg.com/564x/05/1b/c6/051bc64b14f32ce0f50deb40aa686e2c.jpg"
+    },
+    "8x9": {
+        texto: "La confianza es tu superpoder, ¡no dejes que nadie lo apague!",
+        imagen: "https://i.pinimg.com/564x/e7/dd/bc/e7ddbc6976472b994739881549d24b8e.jpg"
+    },
+    "7x6": {
+        texto: "Recuerda que eres fuerte y valiosa, ¡siempre adelante!",
+        imagen: "https://i.pinimg.com/564x/b6/36/e7/b636e754ccdf29cef40d74d081b8708f.jpg"
+    },
+    "7x9": {
+        texto: "¡Eres increíble! No dejes que nadie te haga sentir menos.",
+        imagen: "https://www.es.amnesty.org/fileadmin/_processed_/6/9/csm_Zona_libre_de_Bullying_1472x625_c50e4b28b5.jpg"  // Nueva imagen 7x9
+    },
+    "9x9": {
+        texto: "Recuerda que cada día es una nueva oportunidad para brillar.",
+        imagen: "https://i.pinimg.com/564x/80/0a/50/800a50796ec57ce2bdf08ce01f6ce7b2.jpg"  // Nueva imagen 9x9
+    },
+    "8x7": {
+        texto: "¡Siempre cree en ti misma, porque eres capaz de lograr lo que te propongas!",
+        imagen: "https://i.pinimg.com/736x/ca/4c/2a/ca4c2ad5cde180becfe597d8ef839ed4.jpg"  // Nueva imagen 8x7
+    }
+};
+
+        function appendNumber(number) {
+            currentInput += number;
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            currentOperation = '';
+            prevInput = '';
+            updateDisplay();
+            document.getElementById("message").innerText = '';
+            document.getElementById("reaction-buttons").innerHTML = '';
+            document.getElementById("message-image").src = '';
+        }
+
+        function operation(op) {
+            if (currentInput === '') return;
+            prevInput = currentInput;
+            currentInput = '';
+            currentOperation = op;
+        }
+
+        function calculate() {
+            if (currentOperation === '' || prevInput === '') return;
+            
+            let result;
+            switch (currentOperation) {
+                case '+':
+                    result = parseFloat(prevInput) + parseFloat(currentInput);
+                    break;
+                case '-':
+                    result = parseFloat(prevInput) - parseFloat(currentInput);
+                    break;
+                case '*':
+                    result = parseFloat(prevInput) * parseFloat(currentInput);
+                    checkMultiplication(prevInput, currentInput);
+                    break;
+                case '/':
+                    result = parseFloat(prevInput) / parseFloat(currentInput);
+                    break;
+            }
+            currentInput = result;
+            currentOperation = '';
+            prevInput = '';
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById("display").value = currentInput;
+        }
+
+        function checkMultiplication(a, b) {
+            const key = `${a}x${b}`;
+            if (mensajes[key]) {
+                document.getElementById("message").innerText = mensajes[key].texto;
+                document.getElementById("message-image").src = mensajes[key].imagen;
+                showReactionButtons();
+            }
+        }
+
+        function showReactionButtons() {
+            document.getElementById("reaction-buttons").innerHTML = `
+                <button class="reaction-buttons" onclick="reaccionar('me gusta')">Me Gusta</button>
+                <button class="reaction-buttons" onclick="reaccionar('no me gusta')">No Me Gusta</button>
+            `;
+        }
+
+        function reaccionar(reaccion) {
+            if (reaccion === 'me gusta') {
+                alert('¡Gracias por tu apoyo! Sigamos luchando contra el bullying.');
+            } else {
+                alert('Recuerda, ¡tu opinión es valiosa! Todos somos importantes.');
+            }
+        }
+    </script>
+
+</body>
+</html>
